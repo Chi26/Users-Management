@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset= UTF-8">
+<meta name="viewport"
+	content="width=device-width,initial-scale=1.0,minimum-scale=1.0">
+<title>Login</title>
+
+     
+<link rel="stylesheet" type="text/css"
+	th:href="@{/webjars/bootstrap/css/bootstrap.min.css}" />
+
+
+</head>
+ <body>
+    
+<div class="container-fluid text-center" >
+
+<div>
+
+<img th:src="@{/images/logo2.jpg}">
+</div>
+
+<form th:action="@{/login}" method="post">
+<h1>Shopping Login</h1>
+</form>
+
+</div>
+
+   
+  </body>
+</html>

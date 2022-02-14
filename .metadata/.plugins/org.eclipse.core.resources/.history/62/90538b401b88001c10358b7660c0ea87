@@ -1,0 +1,5 @@
+package com.shopping.admin.user;
+
+public class CategoriesService {
+
+}

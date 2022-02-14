@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: page_head('Users Form')"></head>
+<body>
+	<div class="container-fluid">
+		<div>
+			<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+				<img th:src="@{/images/logo2.jpg}" />
+				<button class="navbar-toggler" type="button"
+					data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+					aria-controls="navbarSupportedContent" aria-expanded="false"
+					aria-label="Toggle navigation">
+					<span class="navbar-toggler-icon"></span>
+				</button>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav me-auto mb-2 mb-lg-0">
+						<li class="nav-item"><a class="nav-link active"
+							aria-current="page" href="#">Home</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/menus}">Menus</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/users}">Users</a>
+						</li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/products}">Products</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/shipping}">Shipping</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/customers}">Customers</a></li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/orders}">Orders</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/report}">SalesReport</a>
+						</li>
+						<li class="nav-item"><a class="nav-link" th:href="@{/brands}">Brands</a>
+						</li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/categories}">Categories</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/articles}">Articles</a></li>
+						<li class="nav-item"><a class="nav-link"
+							th:href="@{/settings}">Settings</a></li>
+					</ul>
+					<form class="d-flex">
+						<input class="form-control me-2" type="search"
+							placeholder="Search" aria-label="Search">
+						<button class="btn btn-outline-success" type="submit">Search</button>
+					</form>
+				</div>
+			</nav>
+
+		</div>
+		<br>
+		<div class="text-center">
+			<H1>[[${pageTitle}]]</H1>
+
+		</div>
+		<br>
+		<form th:action="@{/users/save}" method="post"
+			style="max-width: 700px; margin: 0 auto" th:object="${user}"
+			onsubmit="return checkEmailUnique(this);" enctype="multipart/form-data">
+
+			<input type="hidden" th:field="*{id}">
+
+			<div class="border border-secondary rounded p-3">
+				<div class="row mb-3">
+					<label for="firstname" class="col-sm-2 col-form-label">First
+						Name</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{firstName}"
+							id="firstname" required minlength="3" maxlength="50">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="lastname" class="col-sm-2 col-form-label">Last
+						Name</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{lastName}"
+							id="lastname" required minlength="3" maxlength="50" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="email" class="col-sm-2 col-form-label">Email</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control" id="email"
+							th:field="*{email}" required minlength="6" maxlength="130"
+							th:name="email" />
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="password" class="col-sm-2 col-form-label">Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							th:if="${user.id == null}" th:field="*{password}" id="password"
+							required minlength="6" maxlength="50" /> <input type="password"
+							class="form-control" th:if="${user.id != null}"
+							th:field="*{password}" id="password" minlength="6" maxlength="50" />
+					</div>
+				</div>
+				<fieldset class="row mb-3">
+					<legend class="col-form-label col-sm-2 pt-0">Roles</legend>
+					<div class="col-sm-10">
+						<div class="form-check">
+							<th:block th:each="role:${allRoles}">
+								<input class="form-check-input" type="checkbox" name="roles"
+									id="roles" th:value="${role.id}" th:field="*{roles}">
+								<label class="m-2" for="roles"> [[${role.name}]] </label>
+					-<small>[[${role.description}]]</small>
+								<br />
+							</th:block>
+						</div>
+
+					</div>
+				</fieldset>
+				<div class="row mb-3">
+					<div class="col-sm-10 offset-sm-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" id="enabled"
+								th:field="*{enabled}"> <label class="form-check-label"
+								for="enabled"> Enable </label>
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="fileImage" class="col-sm-2 col-form-label">Photo</label>
+					<div class="col-sm-8">
+						<input type="file" id="fileImage" class="mb-2" name="image" /> <img
+							class="img-fluid" id="thumbnail"
+							th:src="@{${user.getImagePath}}" />
+
+					</div>
+
+				</div>
+
+			</div>
+			<br>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">Create</button>
+				<button type="submit" class="btn btn-success" id="cancel">Cancel</button>
+			</div>
+	</div>
+	</form>
+
+	<div class="modal fade text-center" id="modalDialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Warning</h4>
+					<button type="button" class="close" data-dismiss="modal">
+						&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalbody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("#cancel").on("click", function() {
+				window.location = "[[@{/users}]]";
+			});
+
+			$("#fileImage").change(function() {
+				showImageThumbnail(this);
+			});
+		});
+
+		function showImageThumbnail(fileInput) {
+			var file = fileInput.files[0];
+			var reader = new FileReader();
+			reader.onload = function(e) {
+				$("#thumbnail").attr("src", e.target.result);
+			};
+			reader.readAsDataURL(file);
+		};
+
+		function checkEmailUnique(form) {
+
+			url = "[[@{/users/checkEmail}]]";
+			userEmail = $("#email").val();
+			csrfValue = $("input[name='_csrf']").val();
+			userId = $("#id").val();
+			params = {
+				id : userId,
+				email : userEmail,
+				_csrf : csrfValue
+			};
+
+			$.post(url, params, function(response) {
+
+				if (response == "ok") {
+					form.submit();
+
+				} else {
+					showModal("Error", "You have duplicated the Email");
+				}
+
+			}).fail(function() {
+				showModal("Error", "Could not connect to the server");
+			});
+
+			return false;
+		};
+
+		function showModal(title, message) {
+			$("#modalTitle").text(title);
+			$("#modalbody").text(message);
+			$("#modalDialog").modal();
+		}
+	</script>
+	<br>
+	<br>
+
+	<div th:replace="footer :: footer"></div>
+</body>
+</html>

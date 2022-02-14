@@ -1,0 +1,30 @@
+@charset "UTF-8";
+*.icon-silver{
+	color:silver;
+}
+*.icon-blue{
+	color:blue;
+}
+
+*.icon-green{
+	color:green;
+}
+
+*.icon-gray{
+	color:gray;
+}
+
+@media screen and (max-width:768px){
+	/* small screen */
+	div.full-details{ display:none }
+}
+
+@media screen and (min-width:768px) and  (max-width:1024px){
+	/* medium screen */
+	div.full-details{ display:block }
+}
+
+@media screen and (min-width:1024px) {
+	/* large screen */
+	
+}

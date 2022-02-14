@@ -1,0 +1,16 @@
+package com.shopping.admin.user;
+
+import javax.transaction.Transactional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shopping.admin.repository.CategoryRepository;
+
+@Service
+@Transactional
+public class CategoriesService {
+
+	@Autowired
+	private CategoryRepository categoryRepository;
+}

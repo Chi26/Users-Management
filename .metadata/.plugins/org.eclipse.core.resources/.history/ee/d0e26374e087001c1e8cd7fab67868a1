@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: page_head('Your Account Details')"></head>
+<body>
+	<div class="container-fluid">
+		<div th:replace="nav :: menu"></div>
+		<br>
+		<div class="text-center">
+			<H1>Your Account Details</H1>
+
+		</div>
+		<div th:if="${message !=null}" class="alert alert-info text-center">
+			[[${message}]]</div>
+		<br>
+		<form th:action="@{/account/update}" method="post"
+			style="max-width: 700px; margin: 0 auto" th:object="${user}"
+			 enctype="multipart/form-data">
+
+			<input type="hidden" th:field="*{id}">
+
+			<div class="border border-secondary rounded p-3">
+				<div class="row mb-3">
+					<label for="firstname" class="col-sm-2 col-form-label">First
+						Name</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{firstName}"
+							id="firstname" required minlength="3" maxlength="50">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="lastname" class="col-sm-2 col-form-label">Last
+						Name</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{lastName}"
+							id="lastname" required minlength="3" maxlength="50" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="email" class="col-sm-2 col-form-label">Email</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control" id="email"
+							th:field="*{email}" readonly="readonly"
+							th:name="email" />
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="password" class="col-sm-2 col-form-label">Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							 th:field="*{password}" minlength="6" maxlength="50" oninput="checkPasswordMatch(document.getElementById('confirmPassword'))" /> 
+					</div>
+				</div>
+				
+				<div class="row mb-3">
+					<label for="password" class="col-sm-2 col-form-label">Confirm Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							  id="confirmPassword"
+							 minlength="6" maxlength="50" oninput="checkPasswordMatch(this)" /> 
+					</div>
+				</div>
+				<fieldset class="row mb-3">
+					<legend class="col-form-label col-sm-2 pt-0">Roles</legend>
+					<div class="col-sm-10">
+						<span>[[${user.roles}]]</span>
+
+					</div>
+				</fieldset>
+				<div class="row mb-3">
+					<div class="col-sm-10 offset-sm-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" id="enabled"
+								th:field="*{enabled}"> <label class="form-check-label"
+								for="enabled"> Enable </label>
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="fileImage" class="col-sm-2 col-form-label">Photo</label>
+					<div class="col-sm-8">
+						<input type="file" id="fileImage" class="mb-2" name="image" /> <img
+							class="img-fluid" id="thumbnail"
+							th:src="@{${user.getImagePath}}" />
+
+					</div>
+
+				</div>
+
+			</div>
+			<br>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">Save</button>
+				<button type="submit" class="btn btn-success" id="cancel">Cancel</button>
+			</div>
+	
+	</form>
+
+	<div class="modal fade text-center" id="modalDialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Warning</h4>
+					<button type="button" class="close" data-dismiss="modal">
+						&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalbody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+
+	  function checkPasswordMatch(confirmPassword){
+		  if(confirmPassword.value != $("#password").val()){
+			  confirmPassword.setCustomValidity("Password do not match");
+		  }else{
+			  confirmPassword.setCustomValidity("");
+		  }
+	  }
+
+	</script>
+	
+	<script th:src="@{/js/commonForm.js}"></script>
+	
+	<br>
+	<br>
+
+	<div th:replace="footer :: footer"></div>
+	</div>
+</body>
+</html>

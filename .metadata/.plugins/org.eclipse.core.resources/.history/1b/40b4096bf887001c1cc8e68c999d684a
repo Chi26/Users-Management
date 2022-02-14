@@ -1,0 +1,9 @@
+package com.shopping.admin.category;
+
+public class CategoryRepositoryTest {
+
+	public CategoryRepositoryTest() {
+		// TODO Auto-generated constructor stub
+	}
+
+}

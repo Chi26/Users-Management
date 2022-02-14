@@ -1,0 +1,13 @@
+package com.shopping.admin.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+
+import com.shopping.admin.user.CategoriesService;
+
+@Controller
+public class CategoriesController {
+
+	@Autowired
+	private CategoriesService categoriesService;
+}

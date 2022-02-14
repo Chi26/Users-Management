@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head th:replace="head :: page_head('Home - Shopping Admin')"></head>
+
+<body>
+	<div class="container-fluid">
+	   <div th:replace="nav :: menu"></div>
+		<div>
+			<H1>Shopping web Control</H1>
+			Welcome 
+			<div class="m-2 text-secondary">
+				<a th:href="@{/account}" sec:authentication="principal.firstname"></a>
+			</div>
+		</div>
+		<div th:replace="footer :: footer"></div>
+	</div>
+</body>
+</html>

@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="head :: page_head('Users Form')"></head>
+<body>
+	<div class="container-fluid">
+		<div th:replace="nav :: menu"></div>
+		<br>
+		<div class="text-center">
+			<H1>[[${pageTitle}]]</H1>
+
+		</div>
+		<br>
+		<form th:action="@{/users/save}" method="post" style="max-width: 700px; margin: 0 auto" th:object="${user}"
+			onsubmit="return checkEmailUnique(this);" enctype="multipart/form-data">
+
+			<input type="hidden" th:field="*{id}">
+
+			<div class="border border-secondary rounded p-3">
+				<div class="row mb-3">
+					<label for="firstname" class="col-sm-2 col-form-label">First
+						Name</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{firstName}"
+							id="firstname" required minlength="3" maxlength="50">
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="lastname" class="col-sm-2 col-form-label">Last
+						Name</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{lastName}"
+							id="lastname" required minlength="3" maxlength="50" />
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="email" class="col-sm-2 col-form-label">Email</label>
+					<div class="col-sm-10">
+						<input type="email" class="form-control" id="email"
+							th:field="*{email}" required minlength="6" maxlength="130"
+							th:name="email" />
+					</div>
+				</div>
+
+				<div class="row mb-3">
+					<label for="password" class="col-sm-2 col-form-label">Password</label>
+					<div class="col-sm-10">
+						<input type="password" class="form-control"
+							th:if="${user.id == null}" th:field="*{password}" 
+							required minlength="6" maxlength="50" /> 
+							<input type="password" class="form-control" th:if="${user.id != null}" th:field="*{password}"  minlength="6" maxlength="50" />
+					</div>
+				</div>
+				<fieldset class="row mb-3">
+					<legend class="col-form-label col-sm-2 pt-0">Roles</legend>
+					<div class="col-sm-10">
+						<div class="form-check">
+							<th:block th:each="role:${allRoles}">
+								<input class="form-check-input" type="checkbox" name="roles"
+									id="roles" th:value="${role.id}" th:field="*{roles}">
+								<label class="m-2" for="roles"> [[${role.name}]] </label>
+					-<small>[[${role.description}]]</small>
+								<br />
+							</th:block>
+						</div>
+
+					</div>
+				</fieldset>
+				<div class="row mb-3">
+					<div class="col-sm-10 offset-sm-2">
+						<div class="form-check">
+							<input class="form-check-input" type="checkbox" id="enabled"
+								th:field="*{enabled}"> <label class="form-check-label"
+								for="enabled"> Enable </label>
+						</div>
+					</div>
+				</div>
+				<div class="row mb-3">
+					<label for="fileImage" class="col-sm-2 col-form-label">Photo</label>
+					<div class="col-sm-8">
+						<input type="file" id="fileImage" class="mb-2" name="image" /> <img
+							class="img-fluid" id="thumbnail"
+							th:src="@{${user.getImagePath}}" />
+
+					</div>
+
+				</div>
+
+			</div>
+			<br>
+			<div class="text-center">
+				<button type="submit" class="btn btn-primary">Create</button>
+				<button type="submit" class="btn btn-success" id="cancel" onclick="clearFilter()">Cancel</button>
+			</div>
+	
+	</form>
+
+	<div class="modal fade text-center" id="modalDialog">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="modalTitle">Warning</h4>
+					<button type="button" class="close" data-dismiss="modal">
+						&times;</button>
+				</div>
+				<div class="modal-body">
+					<span id="modalbody"></span>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-danger" data-dismiss="modal" onclick="clearFilter()">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript">
+	    url = "[[@{/users}]]";
+
+		function checkEmailUnique(form) {
+
+			url = "[[@{/users/checkEmail}]]";
+			userEmail = $("#email").val();
+			csrfValue = $("input[name='_csrf']").val();
+			userId = $("#id").val();
+			params = {
+				id : userId,
+				email : userEmail,
+				_csrf : csrfValue
+			};
+
+			$.post(url, params, function(response) {
+
+				if (response == "ok") {
+					form.submit();
+
+				} else {
+					showModal("Error", "You have duplicated the Email");
+				}
+
+			}).fail(function() {
+				showModal("Error", "Could not connect to the server");
+			});
+
+			return false;
+		};
+
+		function showModal(title, message) {
+			$("#modalTitle").text(title);
+			$("#modalbody").text(message);
+			$("#modalDialog").modal();
+		}
+	</script>
+	<br>
+	<br>
+	<script th:src="@{/js/common.js}"></script>
+  	<script th:src="@{/js/commonForm.js}"></script>
+	<div th:replace="footer :: footer"></div>
+	</div>
+</body>
+</html>
