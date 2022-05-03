@@ -26,7 +26,8 @@ Run```ShoppingBackEndApplication.java```
 <img width="769" alt="image" src="https://user-images.githubusercontent.com/98454417/166422679-b14c85dc-96c1-498b-8d10-67bacee491b5.png">
 
 ## Click User Name to edit details
-<img width="769" alt="image" src="https://user-images.githubusercontent.com/98454417/166422838-b296c6de-bd9c-43d3-92ae-45b7b5df2432.png">
+![image](https://user-images.githubusercontent.com/98454417/166422981-2925beb8-ccb8-4237-b953-a74abe88e44c.png)
+
 
 
 ## Video Demo
